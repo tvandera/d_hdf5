@@ -1,7 +1,0 @@
-
-version(none)
-{
-	void dummy()
-	{
-	}
-}
