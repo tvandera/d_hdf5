@@ -4,9 +4,8 @@
 	"authors": ["Laeeth Isharc"],
 	"homepage": "https://github.com/Laeeth/d_hdf5",
 	"license": "Boost-1.0",
-	"libs":["hdf5","hdf5_hl"],
+	"lflags" : [ "-L$PACKAGE_DIR/c_hdf5/lib", "-lhdf5" ],
 	"targetType":"library",
-	"systemDependencies": "requires HDF5 1.8.15.patch-1 versions of libhdf5 and libhdf5_hl",
 	"sourcePaths": [ "hdf5" ],
 	"importPaths": [ "hdf5" ],
 }
