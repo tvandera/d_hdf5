@@ -17,7 +17,7 @@ import std.array;
 	Basic conversion of HDF5 types to D types and back
 
 	Not recursive so D structs must be built of native D types
-	
+
 	To load HDF5 series into an array of D type T:
 		auto results=slurpDataspaceVector!T(string filename, string dataset name);
 
@@ -71,7 +71,7 @@ int main(string[] args)
 		app.put(temp);
 	}
 	dumpDataSpaceVector("test.hdf5","AUD2",app.data,true);
-	return 1;
+	return 0;
 }
 
 hid_t createDataType(T)(T datatype)
@@ -142,7 +142,7 @@ void dumpDataSpaceVector(T)(string filename,string datasetName, T[] data,bool ap
 			dim=[dims_out[0]+data.length];
 			H5D.set_extent(dataset, dim);
 			debug writefln("*set extent succeeded");
-			auto filespace = H5D.get_space(dataset); 
+			auto filespace = H5D.get_space(dataset);
 			debug writefln("*set filespace");
 	    		offset[0] = dims_out[0];
 	    		auto dim2=[data.length];
@@ -165,8 +165,8 @@ void dumpDataSpaceVector(T)(string filename,string datasetName, T[] data,bool ap
 			debug writefln("* file opened - now destroying dataset; keeping others");
 			H5L.h5delete(file,datasetName,H5P_DEFAULT);
 			debug writefln("* destroyed");
-		}  
-			
+		}
+
 	}
 	else { // either file exists but doesnt contain our dataset, or it doesnt exist
 		if (!fileExists)
@@ -180,7 +180,7 @@ void dumpDataSpaceVector(T)(string filename,string datasetName, T[] data,bool ap
 		}
 
 	}
-			
+
 	hsize_t[1] maxdims = [H5S_UNLIMITED];
 	auto dataspace = H5S.create_simple(dim, maxdims);
 	auto cparms = H5P.create(H5P_DATASET_CREATE); // Modify dataset creation properties, i.e. enable chunking.
@@ -188,14 +188,14 @@ void dumpDataSpaceVector(T)(string filename,string datasetName, T[] data,bool ap
     	H5P.set_fill_value (cparms, dataType, cast(void*)&junk);
     	debug writefln("* creating dataset");
     	auto dataset = H5D.create2(file, datasetName, dataType, dataspace, H5P_DEFAULT, cparms, H5P_DEFAULT);
-	auto filespace = H5D.get_space(dataset); 
+	auto filespace = H5D.get_space(dataset);
 	debug writefln("* writing data");
     	H5D.write(dataset, dataType, dataspace,filespace, H5P_DEFAULT, cast(ubyte*)data.ptr);
 	H5T.close(dataType);
     	H5S.close(space);
 	H5D.close(dataset);
 	H5F.close(file);
-	
+
 }
 
 T[] slurpDataSpaceVector(T)(string filename,string datasetName)
