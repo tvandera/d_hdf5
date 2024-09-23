@@ -9,4 +9,5 @@ lib: deps
 	dub build
 
 examples: lib
-	dub --root=examples/ build
+	cd examples && \
+	bash run_examples.sh
