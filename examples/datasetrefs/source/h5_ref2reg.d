@@ -59,7 +59,6 @@ int main(string[] args)
     hsize_t[3][2] coord = [[0, 0, 1], [6, 0, 8]];
     uint num_points = 3;
     size_t name_size1, name_size2;
-    char[10] buf1, buf2;
 
     /*
      * Create file with default file access and file creation properties.
@@ -121,6 +120,7 @@ int main(string[] args)
     /*
      * Reopen the file to read selections back.
      */
+    writefln("Reopen for reading back");
     file_id = H5F.open(filename, H5F_ACC_RDWR,  H5P_DEFAULT);
 
     /*
@@ -139,13 +139,13 @@ int main(string[] args)
      * Get name of the dataset the first region reference points to
      * using H5Rget_name
      */
-    buf1 = H5R.get_name(dsetr_id, H5RType.DatasetRegion,&_ref_out[0]);
-    writef(" Dataset's name (returned by H5Rget_name) the reference points to is %s, name length is %d\n", buf1, buf1.length);
+    auto buf3 = H5R.get_name(dsetr_id, H5RType.DatasetRegion,&_ref_out[0]);
+    writef(" Dataset's name (returned by H5Rget_name) the reference points to is %s, name length is %d\n", buf3, buf3.length);
     /*
      * Get name of the dataset the first region reference points to
      * using H5Iget_name
      */
-    buf2 = H5I.get_name(dsetv_id);
+    auto buf2 = H5I.get_name(dsetv_id);
     writef(" Dataset's name (returned by H5Iget_name) the reference points to is %s, name length is %d\n", buf2, buf2.length);
 
     space_id = H5R.get_region(dsetr_id, H5RType.DatasetRegion,&_ref_out[0]);
@@ -155,14 +155,8 @@ int main(string[] args)
      */
 
     H5D.read(dsetv_id, H5T_NATIVE_INT, H5S_ALL, space_id,H5P_DEFAULT,cast(ubyte*) data_out.ptr);
-    writef("Selected hyperslab: ");
-    foreach(i;0..21)
-    {
-        writef("\n");
-        foreach(j;0..9)
-            writef("%s ", data_out[i][j]);
-    }
-    writefln("");
+    import std.conv;
+    writef("Selected hyperslab:\n%s\n", to!string(data_out));
 
     /*
      * Close dataspace and the dataset.
