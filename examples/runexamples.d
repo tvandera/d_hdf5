@@ -6,7 +6,7 @@ import std.string;
 import std.exception;
 import std.process;
 
-auto immutable examples = [
+immutable auto examples = [
 
 	"allocationtime": ["h5ex_d_alloc.h5",],
 	"attribute": ["Attributes.h5",],
@@ -22,7 +22,7 @@ auto immutable examples = [
 	"dtransform": ["dtransform.h5",],
 	"extendwrite": ["SDSextendible.h5",],
 	"externallinks": [
-		"hard_link.h5", "soft_link.h5", "prefix_target.h5", "prefix_target.h5",
+		"hard_link.h5", "soft_link.h5",
 		"extlink_prefix_source.h5", "extlink_target.h5", "extlink_source.h5",
 	],
 	"iterategroup": [],
@@ -45,11 +45,22 @@ auto immutable examples = [
 
 void main(string[] args)
 {
-	foreach (example; examples)
+	foreach (example, inputs; examples)
 	{
-		auto cmd = [ example ~ "/" example, ];
-		auto ret = executeShell(cmd);
-		string status = (ret.status == 0) ? "SUCCESS" : "FAILED";
-		writefln("%s: results: %s", entry, status);
+		// copy inputs
+		foreach(input; inputs)
+			copy(input, buildPath(example,input) );
+
+		auto cmd = buildPath(".", example);
+		auto ret = executeShell(cmd, null, Config.none, size_t.max, example);
+		bool success = ret.status == 0;
+		string status = success ? "SUCCESS" : "FAILED";
+		writefln("%s: results: %s", example, status);
+		if (!success)
+			writefln("Output:\n%s", ret.output);
+
+		// remove all
+		foreach(f; globMatch(buildPath(example, "*.h5")))
+				remove(f);
 	}
 }
