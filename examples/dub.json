@@ -4,7 +4,6 @@
 	"authors": ["Laeeth Isharc"],
 	"homepage": "https://github.com/Laeeth/d_hdf5",
 	"license": "Boost-1.0",
-	"libs":["hdf5","hdf5_hl"],
 	"targetType":"library",
 	"dependencies": {
 	},
