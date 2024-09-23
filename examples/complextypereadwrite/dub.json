@@ -1,5 +1,5 @@
 {
-	"name": "complexdatatypereadwrite",
+	"name": "complextypereadwrite",
 	"description": "illustrates the usage of the H5A Interface functions: based on h5_attribute.c
 
   This example shows how to read and write a complex
