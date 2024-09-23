@@ -32,7 +32,6 @@ alias hid_t = int;
 enum LENGTH =10LU;
 enum RANK          =1;
 enum CHUNKSIZE=260;
-debug=0;
 align(1):
 struct PriceBar
 {
@@ -54,7 +53,7 @@ int main(string[] args)
 	hid_t PriceBarid; //  File datatype identifier
 
 	PriceBar[] s2;
-	if (exists("test.hdf5"))
+	if (exists("test_aud.hdf5"))
 	{
 	s2=slurpDataSpaceVector!PriceBar("test_aud.hdf5","AUD");
 	writefln("result=%s",s2);
