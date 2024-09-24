@@ -18,6 +18,11 @@ jobs:
         with:
           compiler: ${{ matrix.dc }}
 
-      - name: Run tests
-        shell: bash
-        run: make all
+      - name: Compile HDF5 (C)
+        run: make lib
+
+      - name: Compile d_hdf5 lib (D)
+        run: make dub
+
+      - name: Run examples
+        run: make examples

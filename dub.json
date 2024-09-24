@@ -8,4 +8,5 @@
 	"targetType":"library",
 	"sourcePaths": [ "hdf5" ],
 	"importPaths": [ "hdf5" ],
+	"preBuildCommands": [ "make lib", ]
 }
